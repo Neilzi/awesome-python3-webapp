@@ -3,6 +3,14 @@
 
 import asyncio, aiomysql
 import logging; logging.basicConfig(level=logging.INFO)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import User
+from coroweb import get
+
+engine = create_engine('mysql+mysqlconnector://awesome_mst:Tuniu520@localhost:3306/awesome')
+DBSession = sessionmaker(bind=engine)
+
 
 @asyncio.coroutine
 def create_pool(loop, **kwargs):
@@ -21,6 +29,7 @@ def create_pool(loop, **kwargs):
         loop=loop
     )
 
+
 @asyncio.coroutine
 def select(sql, args, size=None):
     logging(sql + args)
@@ -36,7 +45,8 @@ def select(sql, args, size=None):
         logging('rows returned: %s' % len(result))
         return result
 
-#执行增删改, 返回受影响的行数
+
+# 执行增删改, 返回受影响的行数
 @asyncio.coroutine
 def execute(sql, args):
     logging(sql + args)
@@ -51,3 +61,9 @@ def execute(sql, args):
             raise
         return affected
 
+
+
+async def findAll():
+    session = DBSession()
+    users = await session.query(User).order_by(User.id).all()
+    return [User(**u) for u in users]

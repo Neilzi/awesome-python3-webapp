@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -21,6 +22,7 @@ class User(Base):
     blogs = relationship('Blog')
     comments = relationship('Comment')
 
+
 class Blog(Base):
     __tablename__ = 'blogs'
 
@@ -31,6 +33,7 @@ class Blog(Base):
     context = Column(Text)
     create_time = Column(DateTime, default=datetime.now())
 
+
 class Comment(Base):
     __tablename__ = 'Comments'
 
@@ -39,6 +42,7 @@ class Comment(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     comment = Column(Text)
     create_time = Column(DateTime, default=datetime.now())
+
 
 engine = create_engine('mysql+mysqlconnector://awesome_mst:Tuniu520@localhost:3306/awesome')
 DBSession = sessionmaker(bind=engine)
