@@ -63,7 +63,14 @@ def execute(sql, args):
 
 
 
-async def findAll():
+def findAll():
     session = DBSession()
-    users = await session.query(User).order_by(User.id).all()
-    return [User(**u) for u in users]
+    users = session.query(User).order_by(User.id).all()
+    logging.info(users)
+    return users
+
+
+if __name__ == '__main__':
+    u = findAll()
+    print(u)
+
